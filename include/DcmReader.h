@@ -11,7 +11,7 @@
 
 class DcmReader
 {
-	using PixelType = signed short;
+	using PixelType = int16_t;
 	using ImageType = itk::Image<PixelType, 3>;
 	using ReaderType = itk::ImageSeriesReader<ImageType>;
 	using ImageIOType = itk::GDCMImageIO;
@@ -27,8 +27,8 @@ public:
 
 	/**
 	* @brief Initialize reader and reader's directory
-	* @param directory [in] directory containing dicom series
-	* @param seriesID [in] id of series to be read (first series will be read if not provided)
+	* @param directory[in] directory containing dicom series
+	* @param seriesID[in] id of series to be read (first series will be read if not provided)
 	*/
 	DcmReader(const std::filesystem::path& directory, const std::string& seriesID = "None");
 	
@@ -43,7 +43,7 @@ public:
 
 	/**
 	* @brief set ID of series that will be read, if multiple IDs are present
-	* @param [in] seriesID ID of series to be read(must be present in reader's directory)
+	* @param[in] seriesID ID of series to be read(must be present in reader's directory)
 	*/
 	inline const void SpecifySeriesID(const std::string& seriesID)
 	{
@@ -61,6 +61,7 @@ public:
 	}
 
 	inline ImageType* GetOutput() {
+		reader->UpdateOutputInformation();
 		return reader->GetOutput();
 	}
 

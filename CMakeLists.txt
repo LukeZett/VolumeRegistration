@@ -6,7 +6,7 @@ set(ITK_DIR "D:\\BP\\itk\\ITK-build")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_library(VolumeRegistration "src/PNGWriter.cpp" "include/VolumeRegistration.h" "include/DcmReader.h" "src/DcmReader.cpp" "include/PngWriter.h")
+add_library(VolumeRegistration "src/Export.cpp" "include/VolumeRegistration.h" "include/DcmReader.h" "src/DcmReader.cpp" "include/Export.h" "include/Difference.h" "src/Difference.cpp")
 
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})

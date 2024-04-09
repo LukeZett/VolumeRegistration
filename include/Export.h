@@ -6,7 +6,7 @@
 #include <filesystem>
 
 
-class PNGWriter
+class Export
 {
 	using InputType = itk::Image<int16_t, 3>;
 	using RescalerType = itk::RescaleIntensityImageFilter<InputType, itk::Image<uint16_t, 3>>;
@@ -21,7 +21,13 @@ public:
 	/**
 	* @brief initialize writer
 	*/
-	PNGWriter();
+	Export();
 
+	/**
+	* @brief Write 3d image as PNG image series
+	* @param[in] path directory for image series
+	* @param[in] name prefix for name of PNGs [prefix]NN.png where NN is slice's index
+	* @param[in] image pointer to 3D ITK image 
+	*/
 	void WriteTo(const std::filesystem::path& path, const std::string& name, InputType* image);
 };

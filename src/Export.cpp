@@ -1,8 +1,8 @@
-#include "PngWriter.h"
+#include "Export.h"
 #include <sstream>
 #include <string>
 
-PNGWriter::PNGWriter() {
+Export::Export() {
 	rescaler->SetOutputMinimum(0); // configure rescaling to exportable range
 	rescaler->SetOutputMaximum(0xFFFF);
 
@@ -13,7 +13,7 @@ PNGWriter::PNGWriter() {
 	writer->SetInput(slicer->GetOutput());
 }
 
-void PNGWriter::WriteTo(const std::filesystem::path& path, const std::string& name, InputType *image)
+void Export::WriteTo(const std::filesystem::path& path, const std::string& name, InputType *image)
 {
 
 	rescaler->SetInput(image);
