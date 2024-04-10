@@ -15,6 +15,10 @@ Export::Export() {
 
 void Export::WriteTo(const std::filesystem::path& path, const std::string& name, InputType *image)
 {
+	if (!std::filesystem::exists(path)) {
+		std::filesystem::create_directory(path);
+	}
+
 
 	rescaler->SetInput(image);
 	rescaler->UpdateOutputInformation();

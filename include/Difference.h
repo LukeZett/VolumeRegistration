@@ -1,3 +1,5 @@
+#pragma once
+
 #include "itkSubtractImageFilter.h"
 #include "itkResampleImageFilter.h"
 #include "itkTranslationTransform.h"
@@ -7,7 +9,6 @@ class Difference
 	using ImageType = itk::Image<int16_t, 3>;
 	using ResamplerType = itk::ResampleImageFilter<ImageType, ImageType>;
 	using DifferenceType = itk::SubtractImageFilter<ImageType, ImageType>;
-	using TransformType = itk::TranslationTransform<double, 3>;
 
 	ResamplerType::Pointer resampler = ResamplerType::New();
 	DifferenceType::Pointer diff = DifferenceType::New();
@@ -38,7 +39,7 @@ public:
 	* @brief Set transform for moving image
 	* @param[in] transform transform applied to moving image before difference
 	*/
-	void SetTransform(TransformType* transform) {
+	void SetTransform(const itk::Transform<double, 3, 3>* transform) {
 		resampler->SetTransform(transform);
 	}
 

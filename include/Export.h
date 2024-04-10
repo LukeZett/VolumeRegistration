@@ -1,3 +1,5 @@
+#pragma once
+
 #include "itkImage.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkExtractImageFilter.h"

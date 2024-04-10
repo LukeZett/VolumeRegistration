@@ -7,6 +7,8 @@ void Difference::SetFixed(ImageType* image) {
 	resampler->SetOutputDirection(image->GetDirection());
 	resampler->SetDefaultPixelValue(0x0);
 
+	using TransformType = itk::TranslationTransform<double, 3>;
+
 	TransformType::Pointer identityTransform = TransformType::New();
 	identityTransform->SetIdentity();
 	resampler->SetTransform(identityTransform);

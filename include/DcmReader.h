@@ -1,3 +1,4 @@
+#pragma once
 
 #include "itkImage.h"
 #include "itkGDCMImageIO.h"
