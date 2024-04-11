@@ -4,11 +4,15 @@
 #include "itkTranslationTransform.h"
 #include "itkMeanSquaresImageToImageMetricv4.h"
 #include "itkRegularStepGradientDescentOptimizerv4.h"
+#include "itkRescaleIntensityImageFilter.h"
 
 class Registration
 {
-	using PixelType = int16_t;
+	using PixelType = float;
 	using ImageType = itk::Image<PixelType, 3>;
+	using InputImageType = itk::Image<int16_t, 3>;
+
+	using ConvertType = itk::RescaleIntensityImageFilter<InputImageType, ImageType>;
 	using TransformType = itk::TranslationTransform<double, 3>;
 	using OptimizerType = itk::RegularStepGradientDescentOptimizerv4<double>;
 	using MetricType = itk::MeanSquaresImageToImageMetricv4<ImageType, ImageType>;
@@ -19,6 +23,8 @@ class Registration
 	OptimizerType::Pointer optimizer = OptimizerType::New();
 	RegistrationType::Pointer registration = RegistrationType::New();
 	TransformType::Pointer movingTransform = TransformType::New();
+	ConvertType::Pointer converterFixed = ConvertType::New();
+	ConvertType::Pointer converterMoving = ConvertType::New();
 
 public:
 	Registration()
@@ -27,14 +33,32 @@ public:
 		registration->SetMetric(metric);
 		movingTransform->SetIdentity();
 		registration->SetMovingInitialTransform(movingTransform);
+		registration->SetMovingImage(converterMoving->GetOutput());
+		registration->SetFixedImage(converterFixed->GetOutput());
+
+		constexpr unsigned int numberOfLevels = 1; // setup for simple one-level registration
+		RegistrationType::ShrinkFactorsArrayType shrinkFactorsPerLevel;
+		shrinkFactorsPerLevel.SetSize(1);
+		shrinkFactorsPerLevel[0] = 1;
+		RegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
+		smoothingSigmasPerLevel.SetSize(1);
+		smoothingSigmasPerLevel[0] = 0;
+		registration->SetNumberOfLevels(numberOfLevels);
+		registration->SetSmoothingSigmasPerLevel(smoothingSigmasPerLevel);
+		registration->SetShrinkFactorsPerLevel(shrinkFactorsPerLevel);
+
+		optimizer->SetNumberOfIterations(10);
+		optimizer->SetLearningRate(4);
+		optimizer->SetMinimumStepLength(0.001);
+		optimizer->SetRelaxationFactor(0.5);
 	}
 
-	void SetMoving(ImageType* image) {
-		registration->SetMovingImage(image);
+	void SetMoving(InputImageType* image) {
+		converterMoving->SetInput(image);
 	}
 	
-	void SetFixed(ImageType* image) {
-		registration->SetFixedImage(image);
+	void SetFixed(InputImageType* image) {
+		converterFixed->SetInput(image);
 	}
 
 	CompositeTransformType::ConstPointer Register() {
