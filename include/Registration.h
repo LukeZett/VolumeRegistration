@@ -27,6 +27,7 @@ class Registration
 	ConvertType::Pointer converterFixed = ConvertType::New();
 	ConvertType::Pointer converterMoving = ConvertType::New();
 
+
 public:
 	Registration()
 	{
