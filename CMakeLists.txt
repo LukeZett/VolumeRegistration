@@ -18,7 +18,7 @@ add_library(VolumeRegistration
 	"src/Registration.cpp"
 	"utilities/Logging.cpp"
 	"utilities/Logging.h"
-	"utilities/Timer.h" "include/RegistrationMonitoring.h" "src/RegistrationMonitoring.cpp")
+	"utilities/Timer.h" "include/RegistrationMonitoring.h" "src/RegistrationMonitoring.cpp" "include/MultiResRegistration.h" "include/RegistrationInterfaceCommand.h")
 
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})

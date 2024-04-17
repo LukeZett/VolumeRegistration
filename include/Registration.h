@@ -8,9 +8,10 @@
 
 class Registration
 {
+	using InputImageType = itk::Image<int16_t, 3>;
+
 	using PixelType = float;
 	using ImageType = itk::Image<PixelType, 3>;
-	using InputImageType = itk::Image<int16_t, 3>;
 
 	using ConvertType = itk::RescaleIntensityImageFilter<InputImageType, ImageType>;
 	using TransformType = itk::TranslationTransform<double, 3>;

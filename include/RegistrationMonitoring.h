@@ -5,7 +5,7 @@
 #include "Logging.h"
 #include "itkRegularStepGradientDescentOptimizerv4.h"
 #include <string>
-
+	
 class RegistrationMonitoring : public itk::Command
 {
 public:
@@ -30,9 +30,9 @@ public:
 		{
 			return;
 		}
-
 		LOG_INFO("Iteration: " + std::to_string(optimizer->GetCurrentIteration()));
 		LOG_INFO("Cost: " + std::to_string(optimizer->GetValue()));
+		std::cout << optimizer->GetCurrentPosition() << std::endl;
 	}
 
 protected:
