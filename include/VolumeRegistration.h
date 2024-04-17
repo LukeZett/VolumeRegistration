@@ -2,3 +2,6 @@
 #include "DcmReader.h"
 #include "Difference.h"
 #include "Registration.h"
+#include "Timer.h"
+#include "Logging.h"
+#include "RegistrationMonitoring.h"

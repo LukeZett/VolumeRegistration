@@ -15,10 +15,13 @@ add_library(VolumeRegistration
 	"include/Difference.h" 
 	"src/Difference.cpp" 
 	"include/Registration.h"
-	"src/Registration.cpp")
+	"src/Registration.cpp"
+	"utilities/Logging.cpp"
+	"utilities/Logging.h"
+	"utilities/Timer.h" "include/RegistrationMonitoring.h" "src/RegistrationMonitoring.cpp")
 
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
 target_link_libraries(VolumeRegistration PUBLIC ${ITK_LIBRARIES})
 
-target_include_directories(VolumeRegistration PUBLIC "include")
+target_include_directories(VolumeRegistration PUBLIC "include" "utilities")

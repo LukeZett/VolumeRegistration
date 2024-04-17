@@ -34,10 +34,12 @@ public:
 
 	void SetMoving(InputImageType* image) {
 		converterMoving->SetInput(image);
+		converterMoving->Update();
 	}
 	
 	void SetFixed(InputImageType* image) {
 		converterFixed->SetInput(image);
+		converterFixed->Update();
 	}
 
 	CompositeTransformType::ConstPointer Register() {
@@ -47,6 +49,10 @@ public:
 		transform->AddTransform(registration->GetModifiableTransform());
 		transform->AddTransform(movingTransform);
 		return transform;
+	}
+
+	OptimizerType::Pointer GetOptimizer() {
+		return optimizer;
 	}
 
 private:
