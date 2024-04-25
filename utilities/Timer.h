@@ -18,7 +18,7 @@ public:
 		m_start = std::chrono::high_resolution_clock::now();
 	}
 
-	inline void Stop()
+	inline void Stop() const
 	{
 		auto end = std::chrono::high_resolution_clock::now();
 		auto duration = end - m_start;

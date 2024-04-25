@@ -128,7 +128,7 @@ private:
 		registrationCC->SetShrinkFactorsPerLevel(shrinkFactorsPerLevel);
 
 		optimizerCC->SetNumberOfIterations(5);
-		optimizerCC->SetLearningRate(4);
+		optimizerCC->SetLearningRate(3);
 		optimizerCC->SetMinimumStepLength(0.001);
 		optimizerCC->SetRelaxationFactor(0.5);
 		optimizerCC->SetMinimumConvergenceValue(1e-6);
@@ -149,7 +149,7 @@ private:
 		registrationMI->SetShrinkFactorsPerLevel(shrinkFactorsPerLevel);
 
 		optimizerMI->SetNumberOfIterations(3);
-		optimizerMI->SetLearningRate(4);
+		optimizerMI->SetLearningRate(1);
 		optimizerMI->SetMinimumStepLength(0.001);
 		optimizerMI->SetRelaxationFactor(0.5);
 		optimizerMI->SetMinimumConvergenceValue(1e-6);
