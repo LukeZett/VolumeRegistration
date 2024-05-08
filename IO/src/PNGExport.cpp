@@ -1,8 +1,8 @@
-#include "Export.h"
+#include "PNGExport.h"
 #include <sstream>
 #include <string>
 
-Export::Export() {
+PNGExport::PNGExport() {
 	rescaler->SetOutputMinimum(0); // configure rescaling to exportable range
 	rescaler->SetOutputMaximum(0xFFFF);
 
@@ -13,7 +13,7 @@ Export::Export() {
 	writer->SetInput(slicer->GetOutput());
 }
 
-void Export::WriteTo(const std::filesystem::path& path, const std::string& name, InputType *image)
+void PNGExport::WriteTo(const std::filesystem::path& path, const std::string& name, InputType *image)
 {
 	if (!std::filesystem::exists(path)) {
 		std::filesystem::create_directory(path);
@@ -43,11 +43,5 @@ void Export::WriteTo(const std::filesystem::path& path, const std::string& name,
 		writer->Update();
 	}
 
-
-	
-
-
-
-	writer->SetFileName((path / name).string());
-	
+	writer->SetFileName((path / name).string());	
 }

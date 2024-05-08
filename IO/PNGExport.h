@@ -8,7 +8,7 @@
 #include <filesystem>
 
 
-class Export
+class PNGExport
 {
 	using InputType = itk::Image<int16_t, 3>;
 	using RescalerType = itk::RescaleIntensityImageFilter<InputType, itk::Image<uint16_t, 3>>;
@@ -23,7 +23,7 @@ public:
 	/**
 	* @brief initialize writer
 	*/
-	Export();
+	PNGExport();
 
 	/**
 	* @brief Write 3d image as PNG image series

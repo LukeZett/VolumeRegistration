@@ -1,5 +1,7 @@
 #include "DcmReader.h"
 
+using namespace DCR;
+
 DcmReader::DcmReader(const std::filesystem::path& directory, const std::string& seriesID)
 {
 	std::string directoryString = directory.string();

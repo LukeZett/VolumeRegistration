@@ -1,4 +1,4 @@
-#include "Export.h"
+#include "PNGExport.h"
 #include "DcmReader.h"
 #include "Difference.h"
 #include "Registration.h"

@@ -56,8 +56,13 @@ public:
 
 	CompositeTransformType::ConstPointer Register() {
 		registrationCC->Update();
+		auto afterCC = registrationCC->GetModifiableTransform();
 
-		registrationMI->SetMovingInitialTransform(registrationCC->GetModifiableTransform());
+		CompositeTransformType::Pointer transformCC = CompositeTransformType::New();
+		transformCC->AddTransform(registrationMI->GetModifiableTransform());
+		transformCC->AddTransform(afterCC);
+
+		registrationMI->SetMovingInitialTransform(transformCC);
 		registrationMI->Update();
 		
 		CompositeTransformType::Pointer transform = CompositeTransformType::New();
@@ -127,8 +132,8 @@ private:
 		registrationCC->SetSmoothingSigmasPerLevel(smoothingSigmasPerLevel);
 		registrationCC->SetShrinkFactorsPerLevel(shrinkFactorsPerLevel);
 
-		optimizerCC->SetNumberOfIterations(5);
-		optimizerCC->SetLearningRate(3);
+		optimizerCC->SetNumberOfIterations(50);
+		optimizerCC->SetLearningRate(1);
 		optimizerCC->SetMinimumStepLength(0.001);
 		optimizerCC->SetRelaxationFactor(0.5);
 		optimizerCC->SetMinimumConvergenceValue(1e-6);
@@ -141,14 +146,14 @@ private:
 		shrinkFactorsPerLevel[0] = 1;
 
 		RegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
-		smoothingSigmasPerLevel.SetSize(1);
+		smoothingSigmasPerLevel.SetSize(numberOfLevels);
 		smoothingSigmasPerLevel[0] = 0;
 
 		registrationMI->SetNumberOfLevels(numberOfLevels);
 		registrationMI->SetSmoothingSigmasPerLevel(smoothingSigmasPerLevel);
 		registrationMI->SetShrinkFactorsPerLevel(shrinkFactorsPerLevel);
 
-		optimizerMI->SetNumberOfIterations(3);
+		optimizerMI->SetNumberOfIterations(30);
 		optimizerMI->SetLearningRate(1);
 		optimizerMI->SetMinimumStepLength(0.001);
 		optimizerMI->SetRelaxationFactor(0.5);
