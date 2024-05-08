@@ -2,6 +2,8 @@
 #include <sstream>
 #include <string>
 
+using namespace DCR;
+
 PNGExport::PNGExport() {
 	rescaler->SetOutputMinimum(0); // configure rescaling to exportable range
 	rescaler->SetOutputMaximum(0xFFFF);

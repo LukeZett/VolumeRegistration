@@ -1,53 +1,69 @@
 #pragma once
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
+#include "itkRescaleIntensityImageFilter.h"
 
-template<typename PixelType, int dimension>
-class ImageBuffer
-{
-public:
-	ImageBuffer(itk::Image<PixelType, dimension> image);
-
-	PixelType* GetData() { return m_buffer; }
-
-	~ImageBuffer();
-
-private:
-	PixelType* m_buffer = nullptr;
-};
-
-
-template<typename PixelType, int dimension>
-inline ImageBuffer<PixelType, dimension>::ImageBuffer(itk::Image<PixelType, dimension> image)
-{
-	using IteratorType = itk::ImageRegionIterator<itk::Image<PixelType, dimension>>;
-
-	auto& region = image.GetLargestPossibleRegion();
-	const itk::Size<dimension>& size = region.GetSize();
-
-	size_t bufferSize = 1;
-	for (size_t i = 0; i < dimension; i++)
+namespace DCR {
+	template<typename InPixelType, int dimension, typename OutPixelType>
+	class ImageBuffer
 	{
-		bufferSize *= size[i];
-	}
-	m_buffer = new PixelType[bufferSize];
+		using RescalerType = itk::RescaleIntensityImageFilter<itk::Image<InPixelType, dimension>, itk::Image<OutPixelType, dimension>>;
+	public:
+		ImageBuffer(itk::Image<InPixelType, dimension>* image);
 
-	IteratorType iter(&image, region);
-	iter.GoToBegin();
+		OutPixelType* GetData() { return m_buffer; }
 
-	size_t buffIter = 0;
+		~ImageBuffer();
 
-	while (!iter.IsAtEnd())
+		const itk::Size<dimension>& GetSize() { return size; };
+
+	private:
+
+		OutPixelType* m_buffer = nullptr;
+		itk::Size<dimension> size;
+
+		RescalerType::Pointer rescaler = RescalerType::New();
+
+	};
+
+
+	template<typename InPixelType, int dimension, typename OutPixelType>
+	inline ImageBuffer<InPixelType, dimension, OutPixelType>::ImageBuffer(itk::Image<InPixelType, dimension>* image)
 	{
-		m_buffer[buffIter] = iter.Get();
-		++iter;
-		++buffIter;
+		rescaler->SetInput(image);
+		rescaler->SetOutputMinimum(std::numeric_limits<OutPixelType>::min());
+		rescaler->SetOutputMaximum(std::numeric_limits<OutPixelType>::max());
+		rescaler->Update();
+
+		using IteratorType = itk::ImageRegionIterator<itk::Image<OutPixelType, dimension>>;
+
+		auto& region = rescaler->GetOutput()->GetLargestPossibleRegion();
+		size = region.GetSize();
+
+		size_t bufferSize = 1;
+		for (size_t i = 0; i < dimension; i++)
+		{
+			bufferSize *= size[i];
+		}
+		m_buffer = new OutPixelType[bufferSize];
+
+		IteratorType iter(rescaler->GetOutput(), region);
+		iter.GoToBegin();
+
+		size_t buffIter = 0;
+
+		while (!iter.IsAtEnd())
+		{
+			m_buffer[buffIter] = iter.Get();
+			++iter;
+			++buffIter;
+		}
+
 	}
 
-}
-
-template<typename PixelType, int dimension>
-inline ImageBuffer<PixelType, dimension>::~ImageBuffer()
-{
-	delete m_buffer;
+	template<typename PixelType, int dimension, typename OutPixelType>
+	inline ImageBuffer<PixelType, dimension, OutPixelType>::~ImageBuffer()
+	{
+		delete m_buffer;
+	}
 }
